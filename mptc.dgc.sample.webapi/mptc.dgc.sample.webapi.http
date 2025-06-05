@@ -1,0 +1,6 @@
+@mptc.dgc.sample.webapi_HostAddress = http://localhost:5264
+
+GET {{mptc.dgc.sample.webapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
