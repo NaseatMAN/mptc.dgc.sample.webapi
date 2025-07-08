@@ -12,12 +12,17 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 {
     options.InvalidModelStateResponseFactory = InvalidModelStateResponse.ProduceErrorResponse;
 });
-
+builder.Services.AddApplicationInsightsTelemetry(options =>
+{
+    options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
+});
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAppDbContext(builder.Configuration);
 builder.Services.AddAppServices();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddUserBasedRateLimiting(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,9 +32,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerConfiguration(provider);
 
 }
-app.UseMiddleware<ExceptionMiddleware>();
-app.UseHttpsRedirection();
 
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseRateLimiter();
 app.UseAuthorization();
 
 app.MapControllers();
