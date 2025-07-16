@@ -1,10 +1,9 @@
 using Asp.Versioning.ApiExplorer;
+using Microsoft.Extensions.Options;
 using mptc.dgc.sample.application.Middleware;
 using mptc.dgc.sample.webapi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 builder.Services.AddCustomApiVersioning();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -16,13 +15,8 @@ builder.Services.AddApplicationInsightsTelemetry(options =>
 {
     options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
 });
-builder.Services.AddSwaggerGen();
-builder.Services.AddSwaggerConfiguration();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddAppDbContext(builder.Configuration);
-builder.Services.AddAppServices();
-builder.Services.AddJwtAuthentication(builder.Configuration);
-builder.Services.AddUserBasedRateLimiting(builder.Configuration);
+
+builder.Services.AddApplicationService(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

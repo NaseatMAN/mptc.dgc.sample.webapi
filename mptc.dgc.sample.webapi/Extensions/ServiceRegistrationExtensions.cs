@@ -1,6 +1,8 @@
-﻿using mptc.dgc.sample.application.Interfaces.IUser;
+﻿using mptc.dgc.sample.application.Interfaces;
+using mptc.dgc.sample.application.Interfaces.IUser;
 using mptc.dgc.sample.application.Mappings;
 using mptc.dgc.sample.application.Repositories;
+using mptc.dgc.sample.application.Services;
 using mptc.dgc.sample.webapi.Filter;
 
 namespace mptc.dgc.sample.webapi.Extensions;
@@ -11,6 +13,8 @@ public static class ServiceRegistrationExtensions
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserMapper, UserMapper>();
+        services.AddScoped<ISentQueueMessageService, SentQueueMessageService>();
+        services.AddScoped<IRedisQueueService, RedisQueueService>();
         services.AddScoped<ApiDeprecateActionFilter>();
         return services;
     }
