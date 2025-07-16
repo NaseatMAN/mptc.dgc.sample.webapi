@@ -15,7 +15,6 @@ builder.Services.AddApplicationInsightsTelemetry(options =>
 {
     options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
 });
-
 builder.Services.AddApplicationService(builder.Configuration);
 var app = builder.Build();
 
